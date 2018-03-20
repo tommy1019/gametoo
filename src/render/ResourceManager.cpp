@@ -6,7 +6,12 @@
 
 #include <SDL_image.h>
 
-std::map<std::string, SDL_Texture*> ResourceManager::loadedMap;
+std::unordered_map<std::string, SDL_Texture*> ResourceManager::loadedMap;
+
+void ResourceManager::preLoadTexture(std::string path)
+{
+    loadTexture(path);
+}
 
 SDL_Texture* ResourceManager::loadTexture(std::string path)
 {

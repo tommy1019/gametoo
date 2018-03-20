@@ -50,6 +50,7 @@ void SplashScene::update()
 
             //Loading
             FontRenderer::loadFont();
+            ResourceManager::preLoadTexture("res/gameSheet.png");
             menuScene = new MainMenuScene();
         }
     }

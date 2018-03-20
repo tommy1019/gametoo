@@ -3,12 +3,20 @@
 
 #include <SDL_net.h>
 
+#include "../../GameState.hpp"
+
 class ServerConnection
 {
 private:
+    static TCPsocket socket;
+    static SDL_sem* socketWriteLock;
 
+    static GameState* gameState;
 public:
+    static bool running;
+
     static int connectToServer(void* data);
+    static void sendDataToServer(uint32_t packetId, void* data);
 };
 
 #endif

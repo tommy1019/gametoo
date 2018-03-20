@@ -13,7 +13,13 @@ void ConnectionManager::startMPServer()
     gameServerThread = SDL_CreateThread(GameServer::startAcceptionConnections, "GameServer", nullptr);
 }
 
-void ConnectionManager::connectToServer(GameState* clientGameState)
+void ConnectionManager::connectToServer()
 {
-    connectionThread = SDL_CreateThread(ServerConnection::connectToServer, "ServerConnection", clientGameState);
+    connectionThread = SDL_CreateThread(ServerConnection::connectToServer, "ServerConnection", nullptr);
 }
+
+void ConnectionManager::sendToServer(uint32_t packetId, void* data)
+{
+    ServerConnection::sendDataToServer(packetId, data);
+}
+

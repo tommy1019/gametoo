@@ -3,14 +3,15 @@
 
 #include <SDL.h>
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 class ResourceManager
 {
 private:
-    static std::map<std::string, SDL_Texture*> loadedMap;
+    static std::unordered_map<std::string, SDL_Texture*> loadedMap;
 public:
+    static void preLoadTexture(std::string path);
     static SDL_Texture* loadTexture(std::string path);
 };
 

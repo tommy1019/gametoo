@@ -13,7 +13,9 @@ private:
 
 public:
     static void startMPServer();
-    static void connectToServer(GameState* clientGameState);
+    static void connectToServer();
+
+    static void sendToServer(uint32_t packetId, void* data);
 };
 
 #endif

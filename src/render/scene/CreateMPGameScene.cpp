@@ -9,14 +9,16 @@
 
 void CreateMPGameScene::update()
 {
+    if (connecting)
+    {
+        return;
+    }
+
     if (rendered)
     {
-        GameState* gameState = new GameState;
-
         //Connect to server
-        ConnectionManager::connectToServer(gameState);
-
-        GameManager::nextScene = new GameScene(gameState);
+        ConnectionManager::connectToServer();
+        connecting = true;
     }
     rendered = true;
 }

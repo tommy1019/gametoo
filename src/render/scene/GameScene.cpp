@@ -2,6 +2,11 @@
 
 #include <iostream>
 
+#include "../../net/ConnectionManager.hpp"
+#include "../../CreateUnitEvent.hpp"
+#include "../../UpdateStateEvent.hpp"
+
+#include "../ResourceManager.hpp"
 #include "../FontRenderer.hpp"
 
 GameScene::GameScene(GameState* clientGameState)
@@ -25,8 +30,19 @@ void GameScene::handelEvent(SDL_Event e)
     {
         int mx, my;
         SDL_GetMouseState(&mx, &my);
-        Unit* u = new Unit(mx - 32, my - 32);
-        clientGameState->units.push_back(u);
-        std::cout << "Adding unit " << mx << " " << my << std::endl;
+        CreateUnitEvent e;
+        e.x = mx - 32;
+        e.y = my - 32;
+
+        ConnectionManager::sendToServer(1, &e);
+        std::cout << "[Client] Sent create unit packet " << mx << " " << my << std::endl;
+    }
+
+    if (e.type == SDL_KEYDOWN)
+    {
+        UpdateStateEvent e;
+        e.stepNum = 0;
+        ConnectionManager::sendToServer(2, &e);
+        std::cout << "[Client] Sent update event" << std::endl;
     }
 }

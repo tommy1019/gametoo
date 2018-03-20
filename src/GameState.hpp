@@ -9,6 +9,8 @@ class GameState
 {
 public:
     std::vector<Unit*> units;
+
+    void update();
 };
 
 #endif

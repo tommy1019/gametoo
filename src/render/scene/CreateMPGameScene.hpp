@@ -7,6 +7,7 @@ class CreateMPGameScene : public Scene
 {
 private:
     bool rendered = false;
+    bool connecting = false;
 public:
     void update() override;
     void render(SDL_Renderer* renderer) override;
