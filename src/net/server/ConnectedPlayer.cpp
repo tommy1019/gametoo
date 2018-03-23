@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "GameServer.hpp"
+#include "SyncManager.hpp"
 
 int ConnectedPlayer::newPlayerId = 0;
 
@@ -41,7 +42,7 @@ void ConnectedPlayer::run()
 
         if (packetId == 2)
         {
-            GameServer::onInput(playerId);
+            SyncManager::handelClientInput(playerId);
         }
         else
         {

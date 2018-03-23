@@ -50,8 +50,6 @@ int ServerConnection::connectToServer(void* data)
         SDLNet_TCP_Recv(socket, &packetId, sizeof(packetId));
         SDLNet_TCP_Recv(socket, &dataSize, sizeof(dataSize));
 
-        //std::cout << "Trying to allocate " << dataSize << " bytes" << std::endl;
-
         uint8_t* data = new uint8_t[dataSize];
         SDLNet_TCP_Recv(socket, data, dataSize);
 
@@ -70,8 +68,6 @@ int ServerConnection::connectToServer(void* data)
                 UpdateStateEvent e;
                 e.stepNum = 0;
                 sendDataToServer(2, &e);
-
-                //std::cout << "[Client] Sent update packet" << std::endl;
             }
             break;
         }
