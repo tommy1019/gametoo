@@ -1,14 +1,14 @@
 #ifndef Chunk_hpp
 #define Chunk_hpp
 
-#include <SDL.h>
+#include <GL/glew.h>
 
 #include "render/RenderObject.hpp"
 
 class Chunk
 {
 private:
-    static SDL_Texture* texture;
+    static GLuint texture;
 
     int data[64][64];
 public:
@@ -16,7 +16,7 @@ public:
 
     Chunk();
 
-    void render(SDL_Renderer* renderer);
+    void render();
 };
 
 #endif

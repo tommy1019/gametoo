@@ -19,7 +19,7 @@ void CreateSPGameScene::update()
     rendered = true;
 }
 
-void CreateSPGameScene::render(SDL_Renderer *renderer)
+void CreateSPGameScene::render()
 {
-    FontRenderer::renderString(renderer, "Creating server", 400 - FontRenderer::pixelLength("Creating server", 25) / 2, 300 - 32, 25);
+    FontRenderer::renderString("Creating server", 400 - FontRenderer::pixelLength("Creating server", 25) / 2, 300 - 32, 25);
 }

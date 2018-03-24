@@ -1,6 +1,8 @@
 #ifndef SplashScene_hpp
 #define SplashScene_hpp
 
+#include <GL/glew.h>
+
 #include "Scene.hpp"
 #include "MainMenuScene.hpp"
 
@@ -8,7 +10,7 @@ class SplashScene : public Scene
 {
 private:
     MainMenuScene* menuScene;
-    SDL_Texture* splashLogo;
+    GLuint splashLogo;
 
     bool fading = true;
     bool fadeIn = true;
@@ -20,7 +22,7 @@ public:
     ~SplashScene();
 
     virtual void update() override;
-    virtual void render(SDL_Renderer* renderer) override;
+    virtual void render() override;
     virtual void handelEvent(SDL_Event e) override;
 };
 

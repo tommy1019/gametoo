@@ -40,20 +40,20 @@ MainMenuScene::~MainMenuScene()
     delete mpButtonRight;
 }
 
-void MainMenuScene::render(SDL_Renderer* renderer)
+void MainMenuScene::render()
 {
-    spButtonLeft->render(renderer);
-    spButtonMiddle->render(renderer);
-    spButtonRight->render(renderer);
+    spButtonLeft->render();
+    spButtonMiddle->render();
+    spButtonRight->render();
 
-    mpButtonLeft->render(renderer);
-    mpButtonMiddle->render(renderer);
-    mpButtonRight->render(renderer);
+    mpButtonLeft->render();
+    mpButtonMiddle->render();
+    mpButtonRight->render();
 
-    FontRenderer::renderString(renderer, "GameToo", 400 - FontRenderer::pixelLength("GameToo", 50) / 2, 100, 50);
+    FontRenderer::renderString("GameToo", 400 - FontRenderer::pixelLength("GameToo", 50) / 2, 100, 50);
 
-    FontRenderer::renderString(renderer, "Single Player", 400 - FontRenderer::pixelLength("Single Player", 10) / 2, 300 - 10, 10);
-    FontRenderer::renderString(renderer, "Multiplayer", 400 - FontRenderer::pixelLength("Multiplayer", 10) / 2, 400 - 10, 10);
+    FontRenderer::renderString("Single Player", 400 - FontRenderer::pixelLength("Single Player", 10) / 2, 300 - 10, 10);
+    FontRenderer::renderString("Multiplayer", 400 - FontRenderer::pixelLength("Multiplayer", 10) / 2, 400 - 10, 10);
 }
 
 void MainMenuScene::handelEvent(SDL_Event e)

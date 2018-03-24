@@ -1,15 +1,19 @@
 #include "GameManager.hpp"
 
-SDL_Renderer* GameManager::renderer;
+#include <GL/glew.h>
+
+#include "render/Render.hpp"
 
 Scene* GameManager::nextScene = nullptr;
 Scene* GameManager::currentScene = nullptr;
 
-void GameManager::runGame(SDL_Renderer* renderer)
+void GameManager::runGame(SDL_Window* window)
 {
     bool running = true;
 
     SDL_Event e;
+
+    Render::initOpenGL();
 
     while (running)
     {
@@ -30,11 +34,11 @@ void GameManager::runGame(SDL_Renderer* renderer)
             currentScene->handelEvent(e);
         }
 
-        SDL_RenderClear(renderer);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         currentScene->update();
-        currentScene->render(renderer);
+        currentScene->render();
 
-        SDL_RenderPresent(renderer);
+        SDL_GL_SwapWindow(window);
     }
 }

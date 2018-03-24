@@ -10,6 +10,14 @@ find_package(PkgConfig)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED sdl2_image)
 pkg_check_modules(SDL2_NET REQUIRED sdl2_net)
+pkg_check_modules(GLEW REQUIRED glew)
+
+find_package(OpenGL REQUIRED)
+
+find_library(SDL2_LIB sdl2)
+find_library(SDL2_IMG_LIB sdl2_image)
+find_library(SDL2_NET_LIB sdl2_net)
+find_library(GLEW_LIB glew)
 
 file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE sources ${CMAKE_SOURCE_DIR}/src/*.cpp)
@@ -18,8 +26,8 @@ file(GLOB_RECURSE resources ${CMAKE_SOURCE_DIR}/res/*)
 set(destination "${CMAKE_CURRENT_BINARY_DIR}/res")
 
 add_executable(gametoo ${sources} ${headers})
-target_include_directories(gametoo PUBLIC ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_NET_INCLUDE_DIRS})
-target_link_libraries(gametoo ${SDL2} ${SDL2_IMAGE} ${SDL2_NET})
+target_include_directories(gametoo PUBLIC ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_NET_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+target_link_libraries(gametoo ${SDL2_LIB} ${SDL2_IMG_LIB} ${SDL2_NET_LIB} ${GLEW_LIB} ${OPENGL_LIBRARIES})
 
 add_custom_command(
     TARGET gametoo POST_BUILD

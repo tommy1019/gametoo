@@ -20,15 +20,15 @@ GameScene::GameScene(GameState* clientGameState)
     clientGameState->world->chunkList.push_back(chunk);
 }
 
-void GameScene::render(SDL_Renderer *renderer)
+void GameScene::render()
 {
-	clientGameState->world->render(renderer);
+	clientGameState->world->render();
 
-    FontRenderer::renderString(renderer, "Click to place units", 0, 0, 20);
+    FontRenderer::renderString("Click to place units", 0, 0, 20);
 
     for (Unit* u : clientGameState->units)
     {
-        u->draw(renderer);
+        u->draw();
     }
 }
 

@@ -6,7 +6,7 @@
 class Scene
 {
 public:
-    virtual void render(SDL_Renderer* renderer) {};
+    virtual void render() {};
     virtual void update() {};
     virtual void handelEvent(SDL_Event e) {};
 

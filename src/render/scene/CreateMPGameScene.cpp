@@ -23,7 +23,7 @@ void CreateMPGameScene::update()
     rendered = true;
 }
 
-void CreateMPGameScene::render(SDL_Renderer *renderer)
+void CreateMPGameScene::render()
 {
-    FontRenderer::renderString(renderer, "Connecting to server", 400 - FontRenderer::pixelLength("Connecting to server", 25) / 2, 300 - 32, 25);
+    FontRenderer::renderString("Connecting to server", 400 - FontRenderer::pixelLength("Connecting to server", 25) / 2, 300 - 32, 25);
 }

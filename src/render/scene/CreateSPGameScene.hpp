@@ -9,7 +9,7 @@ private:
     bool rendered = false;
 public:
     void update() override;
-    void render(SDL_Renderer* renderer) override;
+    void render() override;
 };
 
 #endif

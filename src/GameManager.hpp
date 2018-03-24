@@ -11,11 +11,9 @@ private:
     static Scene* currentScene;
 
 public:
-    static SDL_Renderer* renderer;
-
     static Scene* nextScene;
 
-    static void runGame(SDL_Renderer* renderer);
+    static void runGame(SDL_Window* window);
 };
 
 #endif

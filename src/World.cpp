@@ -1,9 +1,9 @@
 #include "World.hpp"
 
-void World::render(SDL_Renderer* renderer)
+void World::render()
 {
     for (Chunk* c : chunkList)
     {
-        c->render(renderer);
+        c->render();
     }
 }

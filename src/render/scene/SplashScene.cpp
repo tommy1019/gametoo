@@ -1,9 +1,12 @@
+#include <iostream>
+
 #include "SplashScene.hpp"
 #include "../../GameManager.hpp"
 #include "../ResourceManager.hpp"
 #include "MainMenuScene.hpp"
 #include "../FontRenderer.hpp"
 #include "../../Chunk.hpp"
+#include "../Render.hpp"
 
 SplashScene::SplashScene()
 {
@@ -12,8 +15,7 @@ SplashScene::SplashScene()
 
 SplashScene::~SplashScene()
 {
-    SDL_DestroyTexture(splashLogo);
-    splashLogo = nullptr;
+    std::cout << "Still not cleaning up textures splash screen" << std::endl;
 }
 
 void SplashScene::update()
@@ -58,16 +60,12 @@ void SplashScene::update()
     }
 }
 
-void SplashScene::render(SDL_Renderer* renderer)
+void SplashScene::render()
 {
-    SDL_Rect drawRect;
-    drawRect.x = 0;
-    drawRect.y = 0;
-    drawRect.w = 800;
-    drawRect.h = 600;
+    //glBindTexture(GL_TEXTURE_2D, splashLogo);
 
-    SDL_SetTextureAlphaMod(splashLogo, curAlpha);
-    SDL_RenderCopy(renderer, splashLogo, nullptr, nullptr);
+    glUniform1i(Render::texUniformLoc, splashLogo);
+    Render::renderQuad();
 }
 
 void SplashScene::handelEvent(SDL_Event e)

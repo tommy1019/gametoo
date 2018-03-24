@@ -18,7 +18,7 @@ public:
     MainMenuScene();
     ~MainMenuScene();
 
-    void render(SDL_Renderer* renderer) override;
+    void render() override;
     void handelEvent(SDL_Event e) override;
 };
 

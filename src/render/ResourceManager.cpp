@@ -1,26 +1,30 @@
 #include "ResourceManager.hpp"
 
-#include "../GameManager.hpp"
-
 #include <iostream>
 
 #include <SDL_image.h>
 
-std::unordered_map<std::string, SDL_Texture*> ResourceManager::loadedMap;
+#include "../GameManager.hpp"
+
+std::unordered_map<std::string, GLuint> ResourceManager::loadedMap;
 
 void ResourceManager::preLoadTexture(std::string path)
 {
     loadTexture(path);
 }
 
-SDL_Texture* ResourceManager::loadTexture(std::string path)
+GLuint ResourceManager::loadTexture(std::string path)
 {
     if (loadedMap.count(path) > 0)
     {
         return loadedMap.at(path);
     }
 
-    SDL_Texture* texture;
+    GLuint loadedTexture;
+
+    glGenTextures(1, &loadedTexture);
+    glBindTexture(GL_TEXTURE_2D, loadedTexture);
+
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == nullptr)
     {
@@ -29,15 +33,37 @@ SDL_Texture* ResourceManager::loadTexture(std::string path)
     }
     else
     {
-        texture = SDL_CreateTextureFromSurface(GameManager::renderer, loadedSurface);
-        if (texture == nullptr)
-        {
-            std::cout << "Failed to create texture: " << path << std::endl;
-            std::cout << SDL_GetError() << std::endl;
-        }
-        SDL_FreeSurface(loadedSurface);
-    }
-    loadedMap.insert(std::pair<std::string, SDL_Texture*>(path, texture));
+        GLenum textureFormat = 0;
+        GLint  numberColors;
 
-    return texture;
+        numberColors = loadedSurface->format->BytesPerPixel;
+        if(numberColors == 4)
+        {
+            if(loadedSurface->format->Rmask == 0x000000ff)
+                textureFormat = GL_RGBA;
+            else
+                textureFormat = GL_BGRA;
+        }
+        else if(numberColors == 3)
+        {
+            if(loadedSurface->format->Rmask == 0x000000ff)
+                textureFormat = GL_RGB;
+            else
+                textureFormat = GL_BGR;
+        }
+        else
+        {
+            std::cout << "Image is not truecolor" << std::endl;
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, numberColors, loadedSurface->w, loadedSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, loadedSurface->pixels);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+    SDL_FreeSurface(loadedSurface);
+
+    loadedMap.insert(std::pair<std::string, GLuint>(path, loadedTexture));
+
+    return loadedTexture;
 }
