@@ -5,6 +5,8 @@
 #include "GameServer.hpp"
 #include "SyncManager.hpp"
 
+#include "../../event/CreateUnitEvent.hpp"
+
 int ConnectedPlayer::newPlayerId = 0;
 
 int ConnectedPlayer::startThread(void* obj)
@@ -40,14 +42,19 @@ void ConnectedPlayer::run()
         uint8_t* data = new uint8_t[dataSize];
         SDLNet_TCP_Recv(socket, data, dataSize);
 
-        if (packetId == 2)
+        SDL_SemWait(SyncManager::dataLock);
+
+        switch (packetId)
         {
-            SyncManager::handelClientInput(playerId);
+            case 1:
+                CreateUnitEvent* e = (CreateUnitEvent*)(data);
+                Unit* u = new Unit(e->x, e->y);
+                GameServer::gameState.units.push_back(u);
+                break;
         }
-        else
-        {
-            GameServer::broadcastData(packetId, data);
-        }
+
+        GameServer::broadcastData(packetId, data);
+        SDL_SemPost(SyncManager::dataLock);
 
         delete[] data;
     }

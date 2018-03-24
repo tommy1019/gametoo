@@ -2,20 +2,28 @@
 
 #include <iostream>
 
-#include "../../net/ConnectionManager.hpp"
-#include "../../CreateUnitEvent.hpp"
-#include "../../UpdateStateEvent.hpp"
-
 #include "../ResourceManager.hpp"
 #include "../FontRenderer.hpp"
+
+#include "../../World.hpp"
+
+#include "../../net/ConnectionManager.hpp"
+#include "../../event/CreateUnitEvent.hpp"
 
 GameScene::GameScene(GameState* clientGameState)
 {
     this->clientGameState = clientGameState;
+
+    clientGameState->world = new World();
+
+    Chunk* chunk = new Chunk();
+    clientGameState->world->chunkList.push_back(chunk);
 }
 
 void GameScene::render(SDL_Renderer *renderer)
 {
+	clientGameState->world->render(renderer);
+
     FontRenderer::renderString(renderer, "Click to place units", 0, 0, 20);
 
     for (Unit* u : clientGameState->units)
@@ -36,13 +44,5 @@ void GameScene::handelEvent(SDL_Event e)
 
         ConnectionManager::sendToServer(1, &e);
         std::cout << "[Client] Sent create unit packet " << mx << " " << my << std::endl;
-    }
-
-    if (e.type == SDL_KEYDOWN)
-    {
-        UpdateStateEvent e;
-        e.stepNum = 0;
-        ConnectionManager::sendToServer(2, &e);
-        std::cout << "[Client] Sent update event" << std::endl;
     }
 }

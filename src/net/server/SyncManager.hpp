@@ -1,21 +1,18 @@
 #ifndef SyncManager_hpp
 #define SyncManager_hpp
 
+#include <utility>
+#include <vector>
 #include <unordered_set>
 
 #include <SDL.h>
 
 class SyncManager
 {
-private:
-    static SDL_sem* setLock;
-    static std::unordered_set<int> respondedPlayers;
-
-    static std::atomic_int inputsReceived;
 public:
-    static int run(void* data);
+    static SDL_sem* dataLock;
 
-    static void handelClientInput(int playerId);
+    static int run(void* data);
 };
 
 #endif

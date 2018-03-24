@@ -23,6 +23,4 @@ void GameState::update()
     }
 
     startTime = curTime;
-
-    //std::cout << "[Client] Updating" << std::endl;
 }

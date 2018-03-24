@@ -6,6 +6,7 @@
 
 #include <SDL_net.h>
 
+#include "../../GameState.hpp"
 #include "ConnectedPlayer.hpp"
 
 class GameServer
@@ -18,6 +19,8 @@ private:
 public:
     static bool running;
     static int numConnected;
+
+    static GameState gameState;
 
     static int startAcceptionConnections(void* data);
 

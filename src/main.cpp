@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         std::cout << "Error initializing SDL" << std::endl;
         std::cout << SDL_GetError() << std::endl;

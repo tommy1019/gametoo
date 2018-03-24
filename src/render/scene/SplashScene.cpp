@@ -3,6 +3,7 @@
 #include "../ResourceManager.hpp"
 #include "MainMenuScene.hpp"
 #include "../FontRenderer.hpp"
+#include "../../Chunk.hpp"
 
 SplashScene::SplashScene()
 {
@@ -51,6 +52,7 @@ void SplashScene::update()
             //Loading
             FontRenderer::loadFont();
             ResourceManager::preLoadTexture("res/gameSheet.png");
+            Chunk::loadTextures();
             menuScene = new MainMenuScene();
         }
     }

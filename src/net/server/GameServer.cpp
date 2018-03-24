@@ -4,16 +4,17 @@
 
 #include "SyncManager.hpp"
 
-#include "../../UpdateStateEvent.hpp"
+#include "../../event/CreateUnitEvent.hpp"
 
 std::vector<ConnectedPlayer*> GameServer::connectedPlayers;
 std::vector<SDL_Thread*> GameServer::connectedPlayerThreads;
 
-SDL_Thread* GameServer::syncThread;
-
+bool GameServer::running = true;
 int GameServer::numConnected = 0;
 
-bool GameServer::running = true;
+SDL_Thread* GameServer::syncThread;
+
+GameState GameServer::gameState;
 
 int GameServer::startAcceptionConnections(void* data)
 {
@@ -50,14 +51,26 @@ int GameServer::startAcceptionConnections(void* data)
             continue;
         }
 
+        SDL_SemWait(SyncManager::dataLock);
+
         ConnectedPlayer* newPlayer = new ConnectedPlayer(newConnection);
         connectedPlayers.push_back(newPlayer);
+
+        for (Unit* u : gameState.units)
+        {
+            CreateUnitEvent e;
+            e.x = u->x;
+            e.y = u->y;
+            newPlayer->sendData(1, &e);
+        }
 
         numConnected++;
 
         SDL_Thread* playerThread;
         SDL_CreateThread(ConnectedPlayer::startThread, "ConnectedPlayerThread", (void*)(newPlayer));
         connectedPlayerThreads.push_back(playerThread);
+
+        SDL_SemPost(SyncManager::dataLock);
 
         std::cout << "[Server] Received connection" << std::endl;
     }

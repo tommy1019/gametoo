@@ -5,8 +5,8 @@
 #include "../../GameManager.hpp"
 #include "../../render/scene/GameScene.hpp"
 
-#include "../../CreateUnitEvent.hpp"
-#include "../../UpdateStateEvent.hpp"
+#include "../../event/CreateUnitEvent.hpp"
+#include "../../event/UpdateStateEvent.hpp"
 
 TCPsocket ServerConnection::socket;
 GameState* ServerConnection::gameState;
@@ -64,10 +64,6 @@ int ServerConnection::connectToServer(void* data)
         case 2:
             {
                 gameState->update();
-
-                UpdateStateEvent e;
-                e.stepNum = 0;
-                sendDataToServer(2, &e);
             }
             break;
         }

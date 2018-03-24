@@ -10,6 +10,8 @@ class Unit
 private:
     RenderObject render;
 public:
+    int x, y;
+
     Unit(int x, int y);
 
     void draw(SDL_Renderer* renderer);

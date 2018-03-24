@@ -17,8 +17,6 @@ file(GLOB_RECURSE resources ${CMAKE_SOURCE_DIR}/res/*)
 
 set(destination "${CMAKE_CURRENT_BINARY_DIR}/res")
 
-message(${SDL2})
-
 add_executable(gametoo ${sources} ${headers})
 target_include_directories(gametoo PUBLIC ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_NET_INCLUDE_DIRS})
 target_link_libraries(gametoo ${SDL2} ${SDL2_IMAGE} ${SDL2_NET})

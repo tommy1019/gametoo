@@ -3,50 +3,35 @@
 #include <iostream>
 
 #include "GameServer.hpp"
-#include "../../UpdateStateEvent.hpp"
+#include "../../event/UpdateStateEvent.hpp"
 
-SDL_sem* SyncManager::setLock;
-std::unordered_set<int> SyncManager::respondedPlayers = std::unordered_set<int>();
-
-std::atomic_int SyncManager::inputsReceived;
+SDL_sem* SyncManager::dataLock;
 
 int SyncManager::run(void* data)
 {
-    inputsReceived = 0;
+    dataLock = SDL_CreateSemaphore(1);
 
-    setLock = SDL_CreateSemaphore(1);
+    uint32_t now = SDL_GetTicks();
+    uint32_t lastUpdate = SDL_GetTicks();
+
+    int updateRate = 60;
+    int updateDelta = 1000 / updateRate *  2;
 
     while (GameServer::running)
     {
-        SDL_SemWait(setLock);
+        now = SDL_GetTicks();
+        uint32_t delta = now - lastUpdate;
+        lastUpdate = now;
 
-        if (inputsReceived >= GameServer::numConnected)
-        {
-            inputsReceived = 0;
-            respondedPlayers.clear();
+        if (delta < updateDelta)
+            SDL_Delay(updateDelta - delta);
 
-            UpdateStateEvent e;
-            e.stepNum = 1;
-
-            GameServer::broadcastData(2, &e);
-        }
-
-        SDL_SemPost(setLock);
+        SDL_SemWait(dataLock);
+        UpdateStateEvent e;
+        e.stepNum = 0;
+        GameServer::broadcastData(2, &e);
+        SDL_SemPost(dataLock);
     }
 
     return 0;
-}
-
-void SyncManager::handelClientInput(int playerId)
-{
-    SDL_SemWait(setLock);
-    if (respondedPlayers.count(playerId) > 0)
-    {
-        SDL_SemPost(setLock);
-        return;
-    }
-
-    inputsReceived++;
-    respondedPlayers.insert(playerId);
-    SDL_SemPost(setLock);
 }
