@@ -2,5 +2,6 @@
 
 struct CreateUnitEvent
 {
-    int32_t x, y;
+    double x;
+    double y;
 };

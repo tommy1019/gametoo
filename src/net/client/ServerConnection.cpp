@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "../ConnectionManager.hpp"
+
 #include "../../GameManager.hpp"
 #include "../../render/scene/GameScene.hpp"
 
@@ -21,7 +23,7 @@ int ServerConnection::connectToServer(void* data)
 
     socketWriteLock = SDL_CreateSemaphore(1);
 
-    if (SDLNet_ResolveHost(&ip, "192.168.1.201", 4668) == -1)
+    if (SDLNet_ResolveHost(&ip, "localhost", 4668) == -1)
     {
         std::cout << "[Client] Failed to resolve host" << std::endl;
         std::cout << SDLNet_GetError() << std::endl;
@@ -51,14 +53,20 @@ int ServerConnection::connectToServer(void* data)
         SDLNet_TCP_Recv(socket, &dataSize, sizeof(dataSize));
 
         uint8_t* data = new uint8_t[dataSize];
-        SDLNet_TCP_Recv(socket, data, dataSize);
+        SDLNet_TCP_Recv(socket, data, static_cast<int>(dataSize));
 
         switch(packetId)
         {
         case 1:
             {
-                CreateUnitEvent* createUnitEvent = (CreateUnitEvent*)data;
-                gameState->units.push_back(new Unit(createUnitEvent->x, createUnitEvent->y));
+                Packet* p = new Packet;
+                p->packetId = packetId;
+                p->dataSize = dataSize;
+                p->data = data;
+
+                SDL_SemWait(ConnectionManager::dataLock);
+                ConnectionManager::unprocessedPackets.push_back(p);
+                SDL_SemPost(ConnectionManager::dataLock);
             }
             break;
         case 2:
@@ -67,20 +75,16 @@ int ServerConnection::connectToServer(void* data)
             }
             break;
         }
-
-        delete[] data;
     }
 
     return 0;
 }
 
-void ServerConnection::sendDataToServer(uint32_t packetId, void* data)
+void ServerConnection::sendDataToServer(uint32_t packetId, uint64_t dataSize, void* data)
 {
-    uint64_t dataSize = sizeof(data);
-
     SDL_SemWait(socketWriteLock);
     SDLNet_TCP_Send(socket, &packetId, sizeof(packetId));
     SDLNet_TCP_Send(socket, &dataSize, sizeof(dataSize));
-    SDLNet_TCP_Send(socket, data, dataSize);
+    SDLNet_TCP_Send(socket, data, static_cast<int>(dataSize));
     SDL_SemPost(socketWriteLock);
 }

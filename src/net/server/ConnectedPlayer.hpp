@@ -13,7 +13,7 @@ private:
     TCPsocket socket;
     SDL_sem* socketWriteLock;
 public:
-
+    
 
     static int startThread(void* obj);
 
@@ -21,7 +21,7 @@ public:
     ~ConnectedPlayer();
 
     void run();
-    void sendData(uint32_t packetId, void *data);
+    void sendData(uint32_t packetId, uint64_t dataSize, void* data);
 };
 
 #endif

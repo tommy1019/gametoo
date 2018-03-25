@@ -15,8 +15,26 @@ void GameManager::runGame(SDL_Window* window)
 
     Render::initOpenGL();
 
+    uint32_t updates = 0;
+    uint32_t startTime = 0;
+    uint32_t totalTime = 0;
+
     while (running)
     {
+        uint32_t curTime = SDL_GetTicks();
+        updates++;
+
+        totalTime += (curTime - startTime);
+
+        if (totalTime > 1000)
+        {
+            std::cout << "[Client] FPS: " << updates << std::endl;
+            updates = 0;
+            totalTime = 0;
+        }
+
+        startTime = curTime;
+
         if (nextScene != nullptr)
         {
             delete currentScene;

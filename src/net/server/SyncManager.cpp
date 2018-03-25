@@ -29,7 +29,7 @@ int SyncManager::run(void* data)
         SDL_SemWait(dataLock);
         UpdateStateEvent e;
         e.stepNum = 0;
-        GameServer::broadcastData(2, &e);
+        GameServer::broadcastData(2, sizeof(UpdateStateEvent), &e);
         SDL_SemPost(dataLock);
     }
 

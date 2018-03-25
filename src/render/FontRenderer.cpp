@@ -14,8 +14,8 @@ void FontRenderer::loadFont()
 void FontRenderer::renderString(std::string txt, int x, int y, float size)
 {
     int charWidth = ceil(size);
-    int uCharHeight = ceil(size * (7.0 / 5.0));
-    int lCharHeight = ceil(size * (11.0 / 5.0));
+    //int uCharHeight = ceil(size * (7.0 / 5.0));
+    //int lCharHeight = ceil(size * (11.0 / 5.0));
     int spaceWidth = ceil(size * 0.2);
 
     x -= charWidth + spaceWidth;

@@ -11,9 +11,20 @@ private:
     RenderObject* spButtonMiddle;
     RenderObject* spButtonRight;
 
+    RenderObject* spButtonLeftPress;
+    RenderObject* spButtonMiddlePress;
+    RenderObject* spButtonRightPress;
+
     RenderObject* mpButtonLeft;
     RenderObject* mpButtonMiddle;
     RenderObject* mpButtonRight;
+
+    RenderObject* mpButtonLeftPress;
+    RenderObject* mpButtonMiddlePress;
+    RenderObject* mpButtonRightPress;
+
+    bool spPressed = false;
+    bool mpPressed = false;
 public:
     MainMenuScene();
     ~MainMenuScene();

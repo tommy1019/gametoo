@@ -5,12 +5,12 @@
 
 class Unit
 {
-private:
-    RenderObject render;
 public:
-    int x, y;
+    RenderObject* renderObject;
 
-    Unit(int x, int y);
+    double x, y;
+
+    Unit(double x, double y);
 
     void draw();
 };

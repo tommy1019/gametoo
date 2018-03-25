@@ -61,7 +61,7 @@ int GameServer::startAcceptionConnections(void* data)
             CreateUnitEvent e;
             e.x = u->x;
             e.y = u->y;
-            newPlayer->sendData(1, &e);
+            newPlayer->sendData(1, sizeof(CreateUnitEvent), &e);
         }
 
         numConnected++;
@@ -78,8 +78,8 @@ int GameServer::startAcceptionConnections(void* data)
     return 0;
 }
 
-void GameServer::broadcastData(uint32_t packetId, void *data)
+void GameServer::broadcastData(uint32_t packetId, uint64_t dataSize, void* data)
 {
     for (ConnectedPlayer* p : connectedPlayers)
-        p->sendData(packetId, data);
+        p->sendData(packetId, dataSize, data);
 }

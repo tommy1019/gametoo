@@ -26,7 +26,7 @@ void SplashScene::update()
         {
             curAlpha++;
 
-            if (curAlpha == 255)
+            if (curAlpha == 10)
             {
                 fading = false;
                 fadeIn = false;
@@ -62,10 +62,7 @@ void SplashScene::update()
 
 void SplashScene::render()
 {
-    //glBindTexture(GL_TEXTURE_2D, splashLogo);
-
-    glUniform1i(Render::texUniformLoc, splashLogo);
-    Render::renderQuad();
+    Render::renderQuad(mvp[0], splashLogo);
 }
 
 void SplashScene::handelEvent(SDL_Event e)

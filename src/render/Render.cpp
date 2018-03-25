@@ -10,6 +10,8 @@ GLint Render::vertexAttribLoc;
 GLint Render::texCoordAttribLoc;
 
 GLint Render::texUniformLoc;
+GLint Render::mvpUniformLoc;
+GLint Render::viewUniformLoc;
 
 GLuint Render::vbo;
 GLuint Render::ibo;
@@ -121,12 +123,26 @@ void Render::initOpenGL()
         return;
     }
 
+    mvpUniformLoc = glGetUniformLocation(program, "mvp");
+    if(mvpUniformLoc == -1)
+    {
+        std::cout << "Can't find mvp uniform" << std::endl;
+        return;
+    }
+
+    viewUniformLoc = glGetUniformLocation(program, "view");
+    if(viewUniformLoc == -1)
+    {
+        std::cout << "Can't find view uniform" << std::endl;
+        return;
+    }
+
     GLfloat vertexData[] =
     {
-        -1.0f, -1.0f,
-         1.0f, -1.0f,
-         1.0f,  1.0f,
-        -1.0f,  1.0f
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f
     };
 
     GLfloat texCoordData[] =
@@ -152,4 +168,26 @@ void Render::initOpenGL()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), indexData, GL_STATIC_DRAW);
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
+
+    GLfloat projectionMatrix[4][4];
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            projectionMatrix[i][j] = 0;
+
+    projectionMatrix[0][0] = 1;
+    projectionMatrix[1][1] = 1;
+    projectionMatrix[2][2] = 1;
+    projectionMatrix[3][3] = 1;
+
+    glUseProgram(program);
+    glUniformMatrix4fv(viewUniformLoc, 1, GL_FALSE, projectionMatrix[0]);
+
+    projectionMatrix[1][1] = 800.0 / 600.0;
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_FALSE, projectionMatrix[0]);
+
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

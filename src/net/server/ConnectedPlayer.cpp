@@ -40,33 +40,38 @@ void ConnectedPlayer::run()
         SDLNet_TCP_Recv(socket, &dataSize, sizeof(dataSize));
 
         uint8_t* data = new uint8_t[dataSize];
-        SDLNet_TCP_Recv(socket, data, dataSize);
+        SDLNet_TCP_Recv(socket, data, static_cast<int>(dataSize));
 
         SDL_SemWait(SyncManager::dataLock);
 
         switch (packetId)
         {
             case 1:
+            {
                 CreateUnitEvent* e = (CreateUnitEvent*)(data);
                 Unit* u = new Unit(e->x, e->y);
                 GameServer::gameState.units.push_back(u);
+                GameServer::broadcastData(packetId, sizeof(CreateUnitEvent), data);
+            }
+                break;
+            default:
+            {
+                std::cout << "[Server] Unknown packet id: " << packetId << std::endl;
+            }
                 break;
         }
 
-        GameServer::broadcastData(packetId, data);
         SDL_SemPost(SyncManager::dataLock);
 
         delete[] data;
     }
 }
 
-void ConnectedPlayer::sendData(uint32_t packetId, void *data)
+void ConnectedPlayer::sendData(uint32_t packetId, uint64_t dataSize, void* data)
 {
-    uint64_t dataSize = sizeof(data);
-
     SDL_SemWait(socketWriteLock);
     SDLNet_TCP_Send(socket, &packetId, sizeof(packetId));
     SDLNet_TCP_Send(socket, &dataSize, sizeof(dataSize));
-    SDLNet_TCP_Send(socket, data, dataSize);
+    SDLNet_TCP_Send(socket, data, static_cast<int>(dataSize));
     SDL_SemPost(socketWriteLock);
 }

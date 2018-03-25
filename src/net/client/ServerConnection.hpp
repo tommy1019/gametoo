@@ -16,7 +16,7 @@ public:
     static bool running;
 
     static int connectToServer(void* data);
-    static void sendDataToServer(uint32_t packetId, void* data);
+    static void sendDataToServer(uint32_t packetId, uint64_t dataSize, void* data);
 };
 
 #endif

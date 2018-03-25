@@ -67,3 +67,8 @@ GLuint ResourceManager::loadTexture(std::string path)
 
     return loadedTexture;
 }
+
+void ResourceManager::unloadTexture(GLuint texture)
+{
+    std::cout << "Still not unloading textures" << std::endl;
+}

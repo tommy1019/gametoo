@@ -13,6 +13,7 @@ private:
 public:
     static void preLoadTexture(std::string path);
     static GLuint loadTexture(std::string path);
+    static void unloadTexture(GLuint texture);
 };
 
 #endif

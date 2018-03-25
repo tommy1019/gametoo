@@ -9,14 +9,18 @@ class RenderObject
 {
 private:
     GLuint texture;
+
+    GLuint tbo;
+
+    GLfloat mvp[4][4];
+
 public:
-    RenderObject(std::string path, int sx, int sy);
+    RenderObject(std::string path, int sx, int sy, int sw = 32, int sh = 32, int textSheetSize = 512);
     ~RenderObject();
 
     void render();
 
-    void setClip(int x, int y);
-    void setPos(int x, int y, int w, int h);
+    void setPos(double x, double y, double w, double h);
 };
 
 #endif

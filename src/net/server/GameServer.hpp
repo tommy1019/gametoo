@@ -24,7 +24,7 @@ public:
 
     static int startAcceptionConnections(void* data);
 
-    static void broadcastData(uint32_t packetId, void* data);
+    static void broadcastData(uint32_t packetId, uint64_t dataSize, void* data);
 };
 
 #endif
